@@ -359,17 +359,16 @@ document.addEventListener('DOMContentLoaded', function() {
             card.style.setProperty('--category-color', getCategoryColor(day.category));
             card.setAttribute('data-day', day.day);
             
+            // Ocultar conteúdo dos dias 1 a 31 com mensagem "Em breve"
             card.innerHTML = `
                 <span class="calendar-day">Dia ${day.day}</span>
-                <h3>${getCategoryLabel(day.category)}</h3>
-                <p class="proverb-preview">${day.proverb}</p>
-                <div class="tool-preview">
-                    <i class="fas fa-tools"></i>
-                    <span>${day.tool}</span>
+                <div class="coming-soon">
+                    <i class="fas fa-clock"></i>
+                    <h3>Em breve</h3>
+                    <p>Conteúdo sendo preparado com carinho</p>
                 </div>
             `;
             
-            card.addEventListener('click', () => openModal(day));
             calendarGrid.appendChild(card);
         });
 
