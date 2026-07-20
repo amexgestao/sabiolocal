@@ -477,6 +477,52 @@ document.addEventListener('DOMContentLoaded', function() {
     observeRevealElements();
 
     // ===================================
+    // Counter Animation for Stats
+    // ===================================
+    function animateCounters() {
+        const counters = document.querySelectorAll('.stat-number[data-count]');
+        
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+                    const target = entry.target;
+                    const countValue = parseInt(target.getAttribute('data-count'));
+                    const displayValue = target.textContent.trim();
+                    
+                    // Skip if it's the infinity symbol
+                    if (displayValue === '∞') {
+                        target.classList.add('counted');
+                        return;
+                    }
+                    
+                    let currentCount = 0;
+                    const increment = Math.ceil(countValue / 30); // Animate over ~30 frames
+                    
+                    const updateCounter = () => {
+                        if (currentCount < countValue) {
+                            currentCount += increment;
+                            if (currentCount > countValue) currentCount = countValue;
+                            target.textContent = currentCount;
+                            requestAnimationFrame(updateCounter);
+                        } else {
+                            target.textContent = countValue;
+                            target.classList.add('counted');
+                        }
+                    };
+                    
+                    updateCounter();
+                }
+            });
+        }, {
+            threshold: 0.5
+        });
+
+        counters.forEach(counter => counterObserver.observe(counter));
+    }
+
+    animateCounters();
+
+    // ===================================
     // Form Submission Handler
     // ===================================
     const inscriptionForm = document.getElementById('inscriptionForm');
