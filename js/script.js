@@ -325,6 +325,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // ===================================
     const calendarGrid = document.getElementById('calendarGrid');
     const filterBtns = document.querySelectorAll('.filter-btn');
+    
+    // Get current day of the month (1-31)
+    const currentDay = new Date().getDate();
 
     function getCategoryColor(category) {
         const colors = {
@@ -349,9 +352,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function renderCalendar(filter = 'all') {
         calendarGrid.innerHTML = '';
         
-        const filteredDays = filter === 'all' 
+        let filteredDays = filter === 'all' 
             ? daysData 
             : daysData.filter(day => day.category === filter);
+        
+        // Filter to show only days up to and including today
+        filteredDays = filteredDays.filter(day => day.day <= currentDay);
 
         filteredDays.forEach(day => {
             const card = document.createElement('div');
