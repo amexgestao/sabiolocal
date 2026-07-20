@@ -704,6 +704,31 @@ input, textarea {
     color: var(--color-accent);
 }
 
+/* Locked/Future days styling */
+.calendar-card.locked {
+    opacity: 0.7;
+    cursor: not-allowed;
+    background: var(--color-gray-100);
+}
+
+.calendar-card.locked:hover {
+    transform: none;
+    box-shadow: var(--shadow-md);
+}
+
+.calendar-card.locked .proverb-preview {
+    color: var(--color-gray-500);
+    font-style: normal;
+}
+
+.calendar-card.locked .tool-preview {
+    color: var(--color-gray-400);
+}
+
+.calendar-card.locked .tool-preview i {
+    color: var(--color-gray-400);
+}
+
 .calendar-legend {
     display: flex;
     justify-content: center;
