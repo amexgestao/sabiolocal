@@ -355,27 +355,41 @@ document.addEventListener('DOMContentLoaded', function() {
         let filteredDays = filter === 'all' 
             ? daysData 
             : daysData.filter(day => day.category === filter);
-        
-        // Filter to show only days up to and including today
-        filteredDays = filteredDays.filter(day => day.day <= currentDay);
 
         filteredDays.forEach(day => {
             const card = document.createElement('div');
-            card.className = 'calendar-card reveal';
+            const isFuture = day.day > currentDay;
+            
+            card.className = 'calendar-card reveal' + (isFuture ? ' locked' : '');
             card.style.setProperty('--category-color', getCategoryColor(day.category));
             card.setAttribute('data-day', day.day);
             
-            card.innerHTML = `
-                <span class="calendar-day">Dia ${day.day}</span>
-                <h3>${getCategoryLabel(day.category)}</h3>
-                <p class="proverb-preview">${day.proverb}</p>
-                <div class="tool-preview">
-                    <i class="fas fa-tools"></i>
-                    <span>${day.tool}</span>
-                </div>
-            `;
+            if (isFuture) {
+                // Future days show "Em breve"
+                card.innerHTML = `
+                    <span class="calendar-day">Dia ${day.day}</span>
+                    <h3>${getCategoryLabel(day.category)}</h3>
+                    <p class="proverb-preview">Em breve...</p>
+                    <div class="tool-preview">
+                        <i class="fas fa-lock"></i>
+                        <span>Em breve</span>
+                    </div>
+                `;
+            } else {
+                // Past and current days show content
+                card.innerHTML = `
+                    <span class="calendar-day">Dia ${day.day}</span>
+                    <h3>${getCategoryLabel(day.category)}</h3>
+                    <p class="proverb-preview">${day.proverb}</p>
+                    <div class="tool-preview">
+                        <i class="fas fa-tools"></i>
+                        <span>${day.tool}</span>
+                    </div>
+                `;
+                
+                card.addEventListener('click', () => openModal(day));
+            }
             
-            card.addEventListener('click', () => openModal(day));
             calendarGrid.appendChild(card);
         });
 
